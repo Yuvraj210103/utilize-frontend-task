@@ -39,7 +39,7 @@ const Nav = () => {
 
   return (
     <div
-      className={`flex overflow-x-auto sidebar-scrollbar items-center gap-4 w-full bg-primary text-surface  text-sm p-1 justify-between px-6`}
+      className={`flex overflow-x-auto sidebar-scrollbar items-center gap-4 w-full bg-primary text-surface  text-sm p-1 justify-between px-6 `}
     >
       <Drawer opened={opened} onClose={close} title="Your Details">
         <div className="flex flex-col">
@@ -59,10 +59,10 @@ const Nav = () => {
         </div>
       </Drawer>
 
-      <FaRegUser
-        className="text-xl font-semibold cursor-pointer hover:scale-105 duration-200"
-        onClick={open}
-      />
+      <div onClick={open} className="flex items-center gap-2 cursor-pointer">
+        <FaRegUser className="text-xl font-semibold  hover:scale-105 duration-200" />
+        <span className="text-xl font-semibold">Profile</span>
+      </div>
 
       <NavItem
         callback={() => {
