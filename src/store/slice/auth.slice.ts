@@ -1,7 +1,9 @@
 import { StateCreator } from "zustand";
 
 export interface IAuthUser {
-  token: string;
+  name: string;
+  picture: string;
+  email: string;
 }
 
 interface AuthState {
