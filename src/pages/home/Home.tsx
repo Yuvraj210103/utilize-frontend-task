@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import ordersData from "../../constant/orders.json";
+import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { Button, Pagination, TextInput } from "@mantine/core";
 import { openContextModal } from "@mantine/modals";
 import { PageRoutes } from "../../@types/enum";
+import { IOrder } from "../../@types/database";
 
-const Home = () => {
-  const [orders, setOrders] = useState<typeof ordersData>([]);
+interface HomeProps {
+  orders: IOrder[];
+  setOrders: React.Dispatch<React.SetStateAction<IOrder[]>>;
+}
+
+const Home = ({ orders, setOrders }: HomeProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const ordersPerPage = 10;
-
-  useEffect(() => {
-    setOrders(ordersData);
-  }, []);
 
   const filteredOrders = orders.filter((order) =>
     order.customer_name.toLowerCase().includes(searchTerm.toLowerCase())

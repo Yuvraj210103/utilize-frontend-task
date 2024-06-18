@@ -9,6 +9,7 @@ import InputSelect from "../../components/common/inputs/InputSelect";
 import { useEffect, useState } from "react";
 import ordersData from "../../constant/orders.json";
 import { showSnackbar } from "../../utilities/TsxUtils";
+import { IOrder } from "../../@types/database";
 
 export const orderCreateSchema = z.object({
   id: z.string().optional(),
@@ -24,13 +25,12 @@ export const orderCreateSchema = z.object({
 
 export type OrderCreateFormFields = z.infer<typeof orderCreateSchema>;
 
-const OrderAddOrEdit = () => {
-  const [orders, setOrders] = useState<typeof ordersData>(ordersData);
+interface OrderAddOrEditProps {
+  orders: IOrder[];
+  setOrders: React.Dispatch<React.SetStateAction<IOrder[]>>;
+}
 
-  useEffect(() => {
-    setOrders(ordersData);
-  }, [ordersData]);
-
+const OrderAddOrEdit = ({ orders, setOrders }: OrderAddOrEditProps) => {
   const [searchParam] = useSearchParams();
 
   const orderId = searchParam.get("id");
@@ -42,8 +42,6 @@ const OrderAddOrEdit = () => {
   >("Product 1");
 
   const order = orderId ? orders.find((order) => order.id === orderId) : null;
-
-  console.log(order, "order");
 
   useEffect(() => {
     if (order) {
@@ -91,7 +89,7 @@ const OrderAddOrEdit = () => {
       setOrders(updatedOrders as typeof orders);
     } else {
       const newOrder = { ...data, id: (orders.length + 1).toString() };
-      setOrders([...orders, newOrder]);
+      setOrders([...orders, newOrder as IOrder]);
     }
 
     showSnackbar({ message: "Order created successfully", type: "success" });
