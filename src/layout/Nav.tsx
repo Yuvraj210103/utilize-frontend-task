@@ -1,6 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { PageRoutes } from "../@types/enum";
+import { FaRegUser } from "react-icons/fa";
 import { useAuthState } from "../store";
+import { openContextModal } from "@mantine/modals";
+import { Drawer } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 const NavItem = ({
   name,
@@ -30,15 +33,59 @@ const NavItem = ({
 };
 
 const Nav = () => {
-  const { userSignOut } = useAuthState();
+  const { userSignOut, authUser } = useAuthState();
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <div
-      className={`flex overflow-x-auto sidebar-scrollbar items-center gap-4 w-full bg-primary text-surface  text-sm p-1 justify-between`}
+      className={`flex overflow-x-auto sidebar-scrollbar items-center gap-4 w-full bg-primary text-surface  text-sm p-1 justify-between px-6`}
     >
-      <NavItem path={PageRoutes.HOME} name="Home" />
+      <Drawer opened={opened} onClose={close} title="Your Details">
+        <div className="flex flex-col">
+          <div className="flex items-center justify-start w-full mb-4">
+            <img
+              src={authUser?.picture}
+              alt=""
+              className="rounded-full object-cover"
+            />
+          </div>
+          <div>
+            Name: <span className="font-medium">{authUser?.name}</span>
+          </div>
+          <div>
+            Email: <span className="font-medium">{authUser?.email}</span>
+          </div>
+        </div>
+      </Drawer>
 
-      <NavItem callback={userSignOut} name="Logout" />
+      <FaRegUser
+        className="text-xl font-semibold cursor-pointer hover:scale-105 duration-200"
+        onClick={open}
+      />
+
+      <NavItem
+        callback={() => {
+          openContextModal({
+            modal: "confirmModal",
+            withCloseButton: false,
+            centered: true,
+            closeOnClickOutside: true,
+            innerProps: {
+              title: "Confirm",
+              body: "Are you sure to sign out",
+              onConfirm: () => {
+                userSignOut();
+              },
+            },
+            size: "30%",
+            styles: {
+              body: { padding: "0px" },
+            },
+          });
+        }}
+        name="Logout"
+      />
     </div>
   );
 };
