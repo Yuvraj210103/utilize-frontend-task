@@ -13,6 +13,8 @@ import { ToastContainer } from "react-toastify";
 import { PageRoutes } from "./@types/enum";
 import Home from "./pages/home/Home";
 import useAuthStateChange from "./hooks/useAuthStateChange";
+import OrderAddOrEdit from "./pages/order/OrderAddOrEdit";
+import "react-toastify/dist/ReactToastify.min.css";
 
 function App() {
   const { authUser } = useAuthState();
@@ -40,6 +42,10 @@ function App() {
           <ToastContainer />
           <Routes>
             <Route path={PageRoutes.HOME} Component={Home} />
+            <Route
+              path={PageRoutes.ORDER_CREATE_OR_EDIT}
+              Component={OrderAddOrEdit}
+            />
           </Routes>
         </Layout>
       </ModalsProvider>

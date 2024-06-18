@@ -3,6 +3,7 @@ import ordersData from "../../constant/orders.json";
 import { useNavigate } from "react-router-dom";
 import { Button, Pagination, TextInput } from "@mantine/core";
 import { openContextModal } from "@mantine/modals";
+import { PageRoutes } from "../../@types/enum";
 
 const Home = () => {
   const [orders, setOrders] = useState<typeof ordersData>([]);
@@ -47,7 +48,9 @@ const Home = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Button onClick={() => navigate("/new-order")}>Create New Order</Button>
+        <Button onClick={() => navigate(PageRoutes.ORDER_CREATE_OR_EDIT)}>
+          Create New Order
+        </Button>
       </div>
       <div className="mb-4">
         <h2 className="text-xl font-bold">
@@ -66,7 +69,11 @@ const Home = () => {
             <p>Quantity: {order.quantity}</p>
             <p>Order Value: ${order.order_value}</p>
             <div className="flex items-center justify-between gap-4 mt-2">
-              <Button onClick={() => navigate(`/edit-order/${order.id}`)}>
+              <Button
+                onClick={() =>
+                  navigate(PageRoutes.ORDER_CREATE_OR_EDIT + `?id=${order.id}`)
+                }
+              >
                 Edit Order
               </Button>
               <Button
